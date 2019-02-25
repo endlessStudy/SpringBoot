@@ -16,21 +16,23 @@ public class UserController {
 
     static Map<Long, User1> User1s = Collections.synchronizedMap(new HashMap<Long, User1>());
 
-    @ApiOperation(value="获取用户列表", notes="")
-    @RequestMapping(value={""}, method= RequestMethod.GET)
-    public List<User1> getUser1List() {
-        List<User1> r = new ArrayList<User1>(User1s.values());
-        return r;
-    }
 
     @ApiOperation(value="创建用户", notes="根据User1对象创建用户")
     @ApiImplicitParam(name = "User1", value = "用户详细实体User1", required = true, dataType = "User1")
     @RequestMapping(value="", method=RequestMethod.POST)
+<<<<<<< .mine
     public String postUser1(@RequestBody User1 User1) {
         User1s.put(User1.getId(), User1);
         return "success";
     }
+=======
+    public String postUser(@RequestBody User user) {
 
+
+
+>>>>>>> .theirs
+
+<<<<<<< .mine
     @ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -49,9 +51,30 @@ public class UserController {
         u.setName(User1.getName());
         u.setAge(User1.getAge());
         User1s.put(id, u);
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> .theirs
         return "success";
     }
 
+<<<<<<< .mine
     @ApiOperation(value="删除用户", notes="根据url的id来指定删除对象")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
@@ -59,5 +82,14 @@ public class UserController {
         User1s.remove(id);
         return "success";
     }
+=======
+
+
+
+
+
+
+
+>>>>>>> .theirs
 
 }
