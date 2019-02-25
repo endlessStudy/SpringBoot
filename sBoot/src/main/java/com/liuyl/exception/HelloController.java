@@ -1,10 +1,8 @@
 package com.liuyl.exception;
 
-import com.liuyl.exception.MyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
