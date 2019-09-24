@@ -1,5 +1,7 @@
 package com.liuyl;
 
+
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -8,10 +10,8 @@ import org.springframework.format.Formatter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -25,7 +25,6 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
     }
-
     @Bean
     public Formatter<LocalDateTime> localDateTimeFormatter() {
         return new Formatter<LocalDateTime>() {

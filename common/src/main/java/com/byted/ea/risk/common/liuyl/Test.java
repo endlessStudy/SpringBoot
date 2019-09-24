@@ -25,6 +25,7 @@ import java.util.TimeZone;
  */
 public class Test {
     public static void main(String[] args) throws ParseException {
+
         String text = "2019-01-01";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date parse = format.parse(text);
