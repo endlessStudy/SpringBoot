@@ -1,7 +1,6 @@
 package com.liuyl.async;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AsyncController {
     @Autowired
-    AsyncServiceImpl service;
+    com.liuyl.async.AsyncServiceImpl service;
     @Autowired
-    DealerService dealerService;
+    com.liuyl.async.DealerService dealerService;
     @RequestMapping("test")
     public Object test(){
 

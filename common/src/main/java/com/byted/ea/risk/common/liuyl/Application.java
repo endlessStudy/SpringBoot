@@ -50,7 +50,7 @@ public class Application {
                 DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime date = null;
                 try {
-                    date = LocalDateTime.parse((String) source, df);
+                    date = LocalDateTime.parse(source, df);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

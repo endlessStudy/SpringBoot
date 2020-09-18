@@ -1,14 +1,22 @@
 package com.byted.ea.risk.common.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -37,8 +45,8 @@ public class Trade1 {
 	@Resource
 	public RestTemplate restTemplate;
 
-	private Map<String, String> map = new HashMap<>();
-	private List<String> list = new ArrayList<>();
+	private final Map<String, String> map = new HashMap<>();
+	private final List<String> list = new ArrayList<>();
 
 	public void init() {
 		// list.add("https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah");
@@ -81,8 +89,8 @@ public class Trade1 {
 
 	}
 
-	private String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
-	private String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah";
+	private final String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
+	private final String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah";
 
 	// @RequestMapping("screening")
 	// public Object getData(@RequestParam String url) {
@@ -92,52 +100,38 @@ public class Trade1 {
 	// }
 	@RequestMapping("screening")
 	public Object getData() {
-		init();
-		System.out.println("start!");
-		int i = 0;
-		long start = System.currentTimeMillis();
-		for (String e : list) {
-			String substring = e.substring(e.indexOf("/", 21), e.lastIndexOf("/")).replace("/", "");
-			String result = restTemplate.getForObject(e, String.class);
-			JSONArray results = JSONObject.parseObject(result).getJSONArray("results");
-			System.out.println(results.size());
-			try {
-				Files.write(Paths.get("d:/json/" + substring + ".json"), result.getBytes());
-			} catch (IOException ex) {
-				System.out.println("2222222222");
-			}
-			// System.out.println(e);
-		}
-		// log.info("所有接口总耗时: System.currentTimeMillis() - start");
-		return System.currentTimeMillis() - start;
+        String url = "https://webgate.ec.europa.eu/europeaid/fsd/fsf/public/files/xmlFullSanctionsList_1_1/content?token=n002v1eq";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
+        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+        return result.getBody();
 
 	}
 
 	@RequestMapping("type")
-	public Object getData1() {
+	public void getData1() {
 		long start = System.currentTimeMillis();
 		String url = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah" +
 				"&sources" +
-				"=%s&size=50&offset=0";
+				"=EL&size=100&offset=%d";
 		// String type = "DPL,EL,UVL,ISN,DTC,13599,FSE,PLC,561,SSI,SDN";
-		String type = "DPL,EL,UVL,ISN,DTC";
-		// String type = "ISN";
-		// String type = "BIS";
-		for (String e : type.split(",")) {
-			String result = restTemplate.getForObject(String.format(url, e), String.class);
-			System.out.println(e + "\t" + JSONObject.parseObject(result).getString("total"));
-			JSONArray results = JSONObject.parseObject(result).getJSONArray("results");
-			System.out.println(results.size());
-			try {
-				Files.write(Paths.get("d:/json/" + e + ".json"), result.getBytes());
-			} catch (IOException ex) {
-				System.out.println("2222222222");
+		String type = "EL";
+		restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+		Object result = restTemplate.getForObject(String.format(url, 0), Object.class);
+		JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(result));
+		int total = jsonObject.getIntValue("total");
+		try {
+			for (int i = 100; i < total; i = i + 100) {
+				String result1 = restTemplate.getForObject(String.format(url, i), String.class);
+				JSONArray result2 = JSONObject.parseObject(result1).getJSONArray("results");
+				jsonObject.getJSONArray("results").add(result2);
 			}
-			System.out.println(e);
+			Files.write(Paths.get("d:/json/" + type + ".json"), jsonObject.toJSONString().getBytes());
+		} catch (IOException ex) {
+			System.out.println("2222222222");
 		}
+		System.out.println(type);
 		// log.info("所有接口总耗时: System.currentTimeMillis() - start");
-		return System.currentTimeMillis() - start;
-
 	}
 
 
@@ -166,5 +160,22 @@ public class Trade1 {
 			System.out.println("2222222222");
 		}
 
+	}
+	public static String revert(String unicode) {
+
+	    StringBuffer string = new StringBuffer();
+
+	    String[] hex = unicode.split("\\\\u");
+
+	    for (int i = 1; i < hex.length; i++) {
+
+	        // 转换出每一个代码点
+	        int data = Integer.parseInt(hex[i], 16);
+
+	        // 追加成string
+	        string.append((char) data);
+	    }
+
+	    return string.toString();
 	}
 }

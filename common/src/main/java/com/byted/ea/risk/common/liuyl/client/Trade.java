@@ -45,8 +45,8 @@ public class Trade {
 	@Resource
 	public RestTemplate restTemplate;
 
-	private Map<String, String> map = new HashMap<>();
-	private List<String> list = new ArrayList<>();
+	private final Map<String, String> map = new HashMap<>();
+	private final List<String> list = new ArrayList<>();
 
 	public void init() {
 		// list.add("https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah");
@@ -77,8 +77,8 @@ public class Trade {
 		list.add("https://api.trade.gov/market_intelligence/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah");
 
 	}
-	private String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
-	private String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah" +
+	private final String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
+	private final String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah" +
 			"&q=chemical";
 
 	// @RequestMapping("screening")

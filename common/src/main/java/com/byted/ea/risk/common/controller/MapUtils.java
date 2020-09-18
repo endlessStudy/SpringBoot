@@ -2,9 +2,7 @@ package com.byted.ea.risk.common.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.byted.ea.risk.common.domain.Lhg;
-import com.byted.ea.risk.common.mapper.LhgMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +29,9 @@ import java.util.List;
  */
 @Service
 @RestController
-public class MapUtils extends ServiceImpl<LhgMapper, Lhg> {
+public class MapUtils {
 	@Resource
 	private RestTemplate restTemplate;
-	@Resource
-	private LhgMapper lhgMapper;
 
 	//https://www.sanctionsmap.eu/api/v1/regime/1?
 	@RequestMapping("lhg")
@@ -73,13 +69,13 @@ public class MapUtils extends ServiceImpl<LhgMapper, Lhg> {
 						lhg.setProgramme(programme);
 						lhgData.add(lhg);
 						if (lhgData.size() > 500) {
-							this.saveBatch(lhgData);
+							// this.saveBatch(lhgData);
 							lhgData.clear();
 						}
 					});
 				});
 			});
 		}
-		this.saveBatch(lhgData);
+		// this.saveBatch(lhgData);
 	}
 }

@@ -3,9 +3,6 @@ package com.liuyl.client;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -40,8 +37,8 @@ public class Trade1 {
 	@Resource
 	public RestTemplate restTemplate;
 
-	private Map<String, String> map = new HashMap<>();
-	private List<String> list = new ArrayList<>();
+	private final Map<String, String> map = new HashMap<>();
+	private final List<String> list = new ArrayList<>();
 
 	public void init() {
 		// list.add("https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah");
@@ -84,8 +81,8 @@ public class Trade1 {
 
 	}
 
-	private String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
-	private String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah";
+	private final String appKey = "AoaSDXDrxRcB3GZtTOj5WDah";
+	private final String path = "https://api.trade.gov/consolidated_screening_list/search?api_key=AoaSDXDrxRcB3GZtTOj5WDah";
 
 	// @RequestMapping("screening")
 	// public Object getData(@RequestParam String url) {

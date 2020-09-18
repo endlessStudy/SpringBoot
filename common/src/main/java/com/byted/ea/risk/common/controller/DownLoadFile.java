@@ -1,11 +1,16 @@
 package com.byted.ea.risk.common.controller;
 
+import org.apache.commons.codec.binary.Base64;
+import org.dom4j.DocumentException;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -28,32 +33,20 @@ public class DownLoadFile {
 
 	@Resource
 	private RestTemplate restTemplate;
-	@RequestMapping("down")
-	public void downLoad(String url,String name) {
-		BufferedWriter writer = null;
-		String data = restTemplate.getForObject(url, String.class);
-		File file = new File("D://xml//" +name+ ".xml");
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), StandardCharsets.ISO_8859_1));
-			writer.write(data);
-		} catch (IOException e) {
-			System.out.println("系统异常");
-			e.printStackTrace();
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("文件写入成功！");
+
+	@RequestMapping("down1")
+	public void downLoad1(String url, String name) throws DocumentException {
+		RestTemplate template = new RestTemplateBuilder()
+        .basicAuthentication("BytedanceDelta", "keH15rW7")
+        .build();
+		String auth = "BytedanceDelta:keH15rW7";
+		 String safeString = Base64.encodeBase64URLSafeString(auth.getBytes(StandardCharsets.UTF_8));
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.set("Authorization", "Basic " + safeString);
+		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestHeaders);
+		Object response = template.getForObject("https://djrcfeed.dowjones.com/DeltaTracker/WL/xml/", Object.class);
+
+
 	}
 
-	public static void main(String[] args) {
-		String url = "https://laws-lois.justice.gc.ca/eng/XML/SOR-2017-233.xml";
-		String name = "腐败外国官员受害者法规";
-		// downLoad(url,name);
-	}
 }
